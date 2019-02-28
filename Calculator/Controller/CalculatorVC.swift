@@ -8,10 +8,13 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class CalculatorVC: UIViewController {
+    
+    let calculator = Calculator()
+   
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
     }
 
