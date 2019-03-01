@@ -8,17 +8,6 @@
 
 import Foundation
 
-enum Operations {
-    
-    case empty
-    case addition
-    case subtraction
-    case division
-    case multiplication
-    case modulo
-    case plusMinus
-}
-
 struct Calculator {
         
     func add(_ n1: Double, _ n2: Double) -> Double {

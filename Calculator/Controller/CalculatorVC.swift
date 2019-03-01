@@ -11,30 +11,29 @@ import AVFoundation
 
 class CalculatorVC: UIViewController {
     
+    
     let calculator = Calculator()
+    
     var btnSound: AVAudioPlayer!
     @IBOutlet var numberLbl: UILabel!
-    @IBOutlet var allCalculationsLbl: UILabel!
     @IBOutlet var numberButtons: [UIButton]!
+    @IBOutlet var expressionLbl: UILabel!
     
-    var leftVal: Double = 0
-    var rightVal: Double = 0
-    var leftValStr: String = ""
-    var rightValStr: String = ""
-    
+    var tree = ExpressionTree()
+    var result: String = ""
     var runningValue = ""
-    var result = ""
-    var hasDecimal = false
-    var currentOperation = Operations.empty
-    
+    let str = "100 + 23 - 99 * 45 * 77"
+    let newStr = ""
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBtnSound()
     }
 
+
     @IBAction func plusMinusBtnPressed(_ sender: UIButton) {
         negateValue()
-        performOperation(.plusMinus)
+        playBtnSound()
     }
     
     @IBAction func clearBtnPressed(_ sender: UIButton) {
@@ -42,12 +41,111 @@ class CalculatorVC: UIViewController {
         playBtnSound()
     }
     
+    private func buildTokens(infixStr: String) -> String {
+        var array = [Token]()
+        var token: Token!
+        
+        for str in infixStr.split(separator: " ") {
+            let data = String(str)
+                if let value = Double(data) {
+                    token = Token(value: value)
+                }
+            
+                if data == "+" { token = Token(operation: .addition)}
+                if data == "-" { token = Token(operation: .subtraction)}
+                if data == "*" { token = Token(operation: .multiplication)}
+                if data == "/" { token = Token(operation: .division)}
+                if data == "%" { token = Token(operation: .modulo)}
+                array.append(token)
+            
+        }
+        
+        return postFixBuilder(array)
+    }
+    
+    private func isOperator(str: String) -> Bool {
+        var isOperator = false
+        
+        if str == "*" { isOperator = true }
+        if str == "/" { isOperator = true }
+        if str == "+" { isOperator = true }
+        if str == "%" { isOperator = true }
+        if str == "-" { isOperator = true }
+        
+        return isOperator
+    }
+    
+    private func createNewNode(str: String) -> ExpressionTree {
+        let newNode = ExpressionTree()
+        newNode.data = str
+        return newNode
+    }
+    
+    public func constructTree(str: String) -> ExpressionTree {
+        
+        var treeStack = Stack<ExpressionTree>()
+        var t, t1, t2 : ExpressionTree
+        
+        for token in str.split(separator: " ") {
+            let tokenToString = String(token)
+            if (!isOperator(str: tokenToString)) {
+                t = createNewNode(str: tokenToString)
+                treeStack.push(t)
+            } else {
+                t = createNewNode(str: tokenToString)
+                
+                // Pop the two nodes from the stack
+                // We know that we will have at least two variables in the stack because
+                // the representation of the postfix will put the operator after the two digitis
+                
+                t1 = treeStack.peek()!
+                _ = treeStack.pop()
+                t2 = treeStack.peek()!
+                _ = treeStack.pop()
+                t.leftChild = t1
+                t.rightChild = t2
+                
+                treeStack.push(t)
+            }
+        }
+        t = treeStack.peek()!
+        _ = treeStack.pop()
+        
+        return t
+    }
+    
+    private func evaluateTree(_ tree: ExpressionTree?) -> Double {
+        
+        if tree == nil {
+            return 0.0
+        }
+        if tree?.leftChild == nil && tree?.rightChild == nil {
+            return Double(tree!.data) ?? 0
+        }
+        
+        let leftVal = evaluateTree(tree?.leftChild)
+        let rightVal = evaluateTree(tree?.rightChild)
+        var ans: Double = 0
+        
+        if tree?.data == "+" { ans = calculator.add(leftVal, rightVal)}
+        if tree?.data == "-" { ans = calculator.subtract(leftVal, rightVal)}
+        if tree?.data == "*" { ans = calculator.multiply(leftVal, rightVal)}
+        if tree?.data == "/" { ans = calculator.divide(leftVal, rightVal)}
+        if tree?.data == "%" { ans = calculator.modulo(leftVal, rightVal)}
+        return ans
+    }
+        
     @IBAction func equalBtnPressed(_ sender: UIButton) {
-        performOperation(currentOperation)
+        performOperation(.addition)
+        let text = numberLbl.text
+        let postFixStr = buildTokens(infixStr: text!)
+        tree = constructTree(str: postFixStr)
+        print(evaluateTree(tree))
 
     }
     @IBAction func moduloBtnPressed(_ sender: UIButton) {
         performOperation(.modulo)
+        
     }
     @IBAction func divideBtnPressed(_ sender: UIButton) {
         performOperation(.division)
@@ -66,7 +164,6 @@ class CalculatorVC: UIViewController {
     }
     
     @IBAction func operationPressed(_ sender: UIButton) {
-        
     
     }
     
@@ -121,14 +218,7 @@ class CalculatorVC: UIViewController {
     // Clear and reset variables and labels
     private func resetValues() {
         numberLbl.text = "0"
-        runningValue = ""
-        leftVal = 0
-        rightVal = 0
-        leftValStr = ""
-        rightValStr = ""
-        currentOperation = .empty
     }
-    
     
     private func performOperation(_ operation: Operations)  {
         playBtnSound()

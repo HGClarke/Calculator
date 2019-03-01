@@ -306,7 +306,8 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="allCalculationsLbl" destination="HZ7-IO-LEA" id="sf6-HK-Mz8"/>
+                        <outlet property="allExpressionLabels" destination="HZ7-IO-LEA" id="zXb-xk-u9D"/>
+                        <outlet property="expressionLbl" destination="HZ7-IO-LEA" id="jIW-qr-TaJ"/>
                         <outlet property="numberLbl" destination="HwP-15-0Ke" id="5OD-ks-COx"/>
                         <outletCollection property="numberButtons" destination="mq6-Jm-ppD" collectionClass="NSMutableArray" id="UB2-gM-kpg"/>
                         <outletCollection property="numberButtons" destination="YVD-Fs-qdL" collectionClass="NSMutableArray" id="3bf-XO-DSk"/>
