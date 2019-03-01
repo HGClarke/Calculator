@@ -8,3 +8,43 @@
 
 import Foundation
 
+enum Operations {
+    
+    case empty
+    case addition
+    case subtraction
+    case division
+    case multiplication
+    case modulo
+    case plusMinus
+}
+
+struct Calculator {
+        
+    func add(_ n1: Double, _ n2: Double) -> Double {
+        return n1 + n2
+    }
+    
+    func subtract(_ n1: Double, _ n2: Double) -> Double {
+        return n1 - n2
+    }
+    
+    func multiply(_ n1: Double, _ n2: Double) -> Double {
+        return n1 * n2
+    }
+    
+    func divide(_ n1: Double, _ n2: Double) -> Double {
+        
+        if n2 != 0 {
+            return (n1 / n2)
+        }
+        return 0
+    }
+    
+    func modulo(_ n1: Double, _ n2: Double) -> Double {
+        return n1.truncatingRemainder(dividingBy: n2)
+    }
+    
+    
+    
+}
