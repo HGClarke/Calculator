@@ -13,6 +13,7 @@
 		AF55E7D22227A64F0062FA3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF55E7D12227A64F0062FA3B /* Assets.xcassets */; };
 		AF55E7D52227A64F0062FA3B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF55E7D32227A64F0062FA3B /* LaunchScreen.storyboard */; };
 		AF55E7E02227A64F0062FA3B /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF55E7DF2227A64F0062FA3B /* CalculatorTests.swift */; };
+		AFCB0D912228D97C00F2E584 /* btnSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AFCB0D902228D97C00F2E584 /* btnSound.mp3 */; };
 		AFD365162228402B005EE591 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD365152228402B005EE591 /* Calculator.swift */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,7 @@
 		AF55E7DB2227A64F0062FA3B /* CalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF55E7DF2227A64F0062FA3B /* CalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorTests.swift; sourceTree = "<group>"; };
 		AF55E7E12227A64F0062FA3B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AFCB0D902228D97C00F2E584 /* btnSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = btnSound.mp3; path = ../../../../../../Downloads/btnSound.mp3; sourceTree = "<group>"; };
 		AFD365152228402B005EE591 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,6 +81,7 @@
 		AF55E7C92227A64D0062FA3B /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				AFCB0D902228D97C00F2E584 /* btnSound.mp3 */,
 				AF55E7D62227A64F0062FA3B /* Info.plist */,
 				AFD3651022283FC6005EE591 /* Model */,
 				AFD3651222283FDA005EE591 /* View */,
@@ -215,6 +218,7 @@
 				AF55E7D52227A64F0062FA3B /* LaunchScreen.storyboard in Resources */,
 				AF55E7D22227A64F0062FA3B /* Assets.xcassets in Resources */,
 				AF55E7D02227A64D0062FA3B /* Main.storyboard in Resources */,
+				AFCB0D912228D97C00F2E584 /* btnSound.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

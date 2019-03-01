@@ -10,15 +10,14 @@ import Foundation
 
 enum Operations {
     
-    case clear
+    case empty
     case addition
     case subtraction
     case division
     case multiplication
-    case percentage
-    
+    case modulo
+    case plusMinus
 }
-
 
 struct Calculator {
         
@@ -42,8 +41,8 @@ struct Calculator {
         return 0
     }
     
-    func percentage(_ n1: Double) -> Double {
-        return n1 / 100
+    func modulo(_ n1: Double, _ n2: Double) -> Double {
+        return n1.truncatingRemainder(dividingBy: n2)
     }
     
     
