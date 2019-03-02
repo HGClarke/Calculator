@@ -11,30 +11,34 @@ import AVFoundation
 
 class CalculatorVC: UIViewController {
     
+    
     let calculator = Calculator()
+    
     var btnSound: AVAudioPlayer!
+    var didPressEqualBtn = false
+    var startedExpression = false
+    var enteringFirstValue = true
+    
+
     @IBOutlet var numberLbl: UILabel!
-    @IBOutlet var allCalculationsLbl: UILabel!
     @IBOutlet var numberButtons: [UIButton]!
+    @IBOutlet var expressionLbl: UILabel!
     
-    var leftVal: Double = 0
-    var rightVal: Double = 0
-    var leftValStr: String = ""
-    var rightValStr: String = ""
+    var tree = ExpressionTree()
+    var result: String = ""
+    var runningValue = "0"
+    var expression = ""
     
-    var runningValue = ""
-    var result = ""
-    var hasDecimal = false
-    var currentOperation = Operations.empty
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBtnSound()
     }
 
+
     @IBAction func plusMinusBtnPressed(_ sender: UIButton) {
-        negateValue()
-        performOperation(.plusMinus)
+        playBtnSound()
+        updateExpressionLbl(op: "^")
     }
     
     @IBAction func clearBtnPressed(_ sender: UIButton) {
@@ -42,58 +46,101 @@ class CalculatorVC: UIViewController {
         playBtnSound()
     }
     
+    private func buildTokens(infixStr: String) -> String {
+        var array = [Token]()
+        var token: Token!
+        
+        for str in infixStr.split(separator: " ") {
+            let data = String(str)
+                if let value = Double(data) {
+                    token = Token(value: value)
+                }
+            
+                if data == "+" { token = Token(operation: .addition)}
+                if data == "-" { token = Token(operation: .subtraction)}
+                if data == "*" { token = Token(operation: .multiplication)}
+                if data == "/" { token = Token(operation: .division)}
+                if data == "%" { token = Token(operation: .modulo)}
+                if data == "^" { token = Token(operation: .exponent)}
+                array.append(token)
+        }
+        
+        return postFixBuilder(array)
+    }
+        
     @IBAction func equalBtnPressed(_ sender: UIButton) {
-        performOperation(currentOperation)
-
+        
+        let text = expressionLbl.text
+        let postFixStr = buildTokens(infixStr: text!)
+        print(postFixStr)
+        if isValidPostFix(postFixStr) {
+            tree = constructTree(str: postFixStr)
+            let value = evaluateTree(tree)
+            numberLbl.text = String(value)
+        } else {
+            numberLbl.text = "Syntax Error"
+        }
+       
     }
+ 
+    
     @IBAction func moduloBtnPressed(_ sender: UIButton) {
-        performOperation(.modulo)
+        playBtnSound()
+        updateExpressionLbl(op: "%")
+        numberLbl.text = "0"
     }
+    
     @IBAction func divideBtnPressed(_ sender: UIButton) {
-        performOperation(.division)
+        playBtnSound()
+        updateExpressionLbl(op: "/")
     }
+    
     @IBAction func multiplyBtnPressed(_ sender: UIButton) {
-        performOperation(.multiplication)
+        updateExpressionLbl(op: "*")
+        
     }
     
     @IBAction func subtractBtnPressed(_ sender: UIButton) {
-        performOperation(.subtraction)
+        updateExpressionLbl(op: "-")
+        
     }
     
     @IBAction func addBtnPressed(_ sender: Any) {
-        performOperation(.addition)
-        print(result)
+        updateExpressionLbl(op: "+")
+        
     }
     
     @IBAction func operationPressed(_ sender: UIButton) {
-        
-    
+        playBtnSound()
+        runningValue = "0"
     }
     
     @IBAction func numberBtnsPressed(_ sender: UIButton) {
         playBtnSound()
-        // May have to change this due to now implementing running yard algorithm
-        if numberLbl.text != "0" {
-            runningValue.append(String(sender.tag))
-            numberLbl.text = runningValue
+        
+        if expressionLbl.text == "0" && sender.tag == 0 {
+            expressionLbl.text = "0"
+            
+        }
+        else if runningValue == "0" {
+            if (sender.tag != 0) {
+                runningValue = String(sender.tag)
+                expression.append(runningValue)
+                expressionLbl.text = expression
+            } 
         } else {
-            numberLbl.text = String(sender.tag)
-            runningValue = numberLbl.text!
+            runningValue = String(sender.tag)
+            expression.append(runningValue)
+            expressionLbl.text = expression
+
         }
     }
-    
-    // If the text contains a negative value then make it a positive value
-    // If the text contains a positive value then make it a negative value
-    private func negateValue() {
-        let text = numberLbl.text!
-        var value = Double(text)!
+
+    private func updateExpressionLbl(op: String) {
+        expression.append(" \(op) ")
+        expressionLbl.text = expression
+        runningValue = "0"
         
-        // if text value is 0 dont make any changes
-        if value != 0 {
-            value = value * -1.0
-            numberLbl.text = String(value)
-            result = numberLbl.text!
-        }
     }
     
     // Sets up the button sound used when user presses buttons
@@ -121,17 +168,11 @@ class CalculatorVC: UIViewController {
     // Clear and reset variables and labels
     private func resetValues() {
         numberLbl.text = "0"
-        runningValue = ""
-        leftVal = 0
-        rightVal = 0
-        leftValStr = ""
-        rightValStr = ""
-        currentOperation = .empty
-    }
-    
-    
-    private func performOperation(_ operation: Operations)  {
-        playBtnSound()
+        expressionLbl.text = "0"
+        didPressEqualBtn = false
+        runningValue = "0"
+        result = "0"
+        expression = ""
     }
 }
 
