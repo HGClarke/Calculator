@@ -30,6 +30,10 @@ struct Calculator {
         return 0
     }
     
+    func power(_ n1: Double, _ n2: Double) -> Double {
+        return pow(n1, n2)
+    }
+    
     func modulo(_ n1: Double, _ n2: Double) -> Double {
         return n1.truncatingRemainder(dividingBy: n2)
     }

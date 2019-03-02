@@ -39,6 +39,7 @@ public enum Operations {
     case division
     case multiplication
     case modulo
+    case exponent
     
     public var description: String {
         
@@ -53,7 +54,11 @@ public enum Operations {
             return "*"
         case .modulo:
             return "%"
+        case .exponent:
+            return "^"
+            
         }
+        
         
     }
 }
@@ -80,6 +85,9 @@ public struct OperatorToken {
         // multiplication, modulo and division
         case .multiplication, .modulo, .division:
             precedence = 5
+            
+        case .exponent:
+            precedence = 10
         }
         return precedence
     }
@@ -91,10 +99,8 @@ public struct OperatorToken {
         case .addition, .division, .subtraction, .multiplication, .modulo:
             return .leftAssociative
         
-        // If exponent button is added to this calculator then we will modify
-        // The calculator because exponses will have right associativity
-      //  default:
-        //    return .rightAssociative
+        case .exponent:
+            return .rightAssociative
         }
     }
     
@@ -146,7 +152,8 @@ public struct Token {
     }
 }
 
-// Converts infix notation into postfix notation
+// Converts the string into an infix expression that our PostFix builder
+// is able to parse and convert it to a postfix notation
 public class InxfixBuilder {
     private var expression : [Token] = []
     

@@ -12,7 +12,6 @@ public func postFixBuilder(_ expression: [Token]) -> String {
     var stack = Stack<Token>()
     
     var postFixNotation = [Token]()
-    
     for token in expression {
         
         switch token.tokenType {
@@ -46,4 +45,47 @@ public func postFixBuilder(_ expression: [Token]) -> String {
         postFixNotation.append(stack.pop()!)
     }
     return postFixNotation.map({token in token.description}).joined(separator: " ")
+}
+
+public func isValidPostFix(_ str: String) -> Bool {
+    var counter = 0    
+    
+    for token in str.split(separator: " ") {
+        let tokenToString = String(token)
+        
+        if tokenToString == "*" {
+            counter = counter - 2
+            counter = counter + 1
+
+        }
+        else if tokenToString == "/" {
+            counter = counter - 2
+            counter = counter + 1
+
+        }
+        else if tokenToString == "%" {
+            counter = counter - 2
+            counter = counter + 1
+        }
+        else if tokenToString == "+" {
+            counter = counter - 2
+            counter = counter + 1
+            
+        }
+        else if tokenToString == "-" {
+            counter = counter - 2
+            counter = counter + 1
+            
+        }
+        else if tokenToString == "^" {
+            counter = counter - 2
+            counter = counter + 1
+            
+        }
+        else { counter = counter + 1 }
+        
+        
+    }
+    
+    return counter == 1
 }

@@ -71,7 +71,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nnN-aR-zc5">
                                                 <rect key="frame" x="94" y="0.0" width="93.5" height="100.5"/>
                                                 <color key="backgroundColor" red="0.31764705882352939" green="0.34901960784313724" blue="0.46274509803921571" alpha="1" colorSpace="calibratedRGB"/>
-                                                <state key="normal" title="±">
+                                                <state key="normal" title="^">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
@@ -306,7 +306,6 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="allExpressionLabels" destination="HZ7-IO-LEA" id="zXb-xk-u9D"/>
                         <outlet property="expressionLbl" destination="HZ7-IO-LEA" id="jIW-qr-TaJ"/>
                         <outlet property="numberLbl" destination="HwP-15-0Ke" id="5OD-ks-COx"/>
                         <outletCollection property="numberButtons" destination="mq6-Jm-ppD" collectionClass="NSMutableArray" id="UB2-gM-kpg"/>
