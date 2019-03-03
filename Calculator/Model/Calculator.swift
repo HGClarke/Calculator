@@ -15,7 +15,7 @@ struct Calculator {
     }
     
     func subtract(_ n1: Double, _ n2: Double) -> Double {
-        return n1 - n2
+        return n2 - n1
     }
     
     func multiply(_ n1: Double, _ n2: Double) -> Double {
@@ -24,18 +24,18 @@ struct Calculator {
     
     func divide(_ n1: Double, _ n2: Double) -> Double {
         
-        if n2 != 0 {
-            return (n1 / n2)
+        if n1 != 0 {
+            return ( n2 / n1)
         }
         return 0
     }
     
     func power(_ n1: Double, _ n2: Double) -> Double {
-        return pow(n1, n2)
+        return pow(n2, n1)
     }
     
     func modulo(_ n1: Double, _ n2: Double) -> Double {
-        return n1.truncatingRemainder(dividingBy: n2)
+        return n2.truncatingRemainder(dividingBy: n1)
     }
     
     

@@ -21,7 +21,7 @@ public class ExpressionTree {
     }
 }
 
-fileprivate func isOperator(str: String) -> Bool {
+private func isOperator(str: String) -> Bool {
     var isOperator = false
     
     if str == "*" { isOperator = true }
@@ -34,13 +34,16 @@ fileprivate func isOperator(str: String) -> Bool {
     return isOperator
 }
 
-fileprivate func createNewNode(str: String) -> ExpressionTree {
+private func createNewNode(str: String) -> ExpressionTree {
     let newNode = ExpressionTree()
     newNode.data = str
     return newNode
 }
 
+// Correctly constructs the expression tree based on the post fix str
+// being passed in
 public func constructTree(str: String) -> ExpressionTree {
+    
     
     var treeStack = Stack<ExpressionTree>()
     var t, t1, t2 : ExpressionTree
@@ -75,23 +78,33 @@ public func constructTree(str: String) -> ExpressionTree {
 
 public func evaluateTree(_ tree: ExpressionTree?) -> Double {
     let calculator = Calculator()
+    
+    // Base case, check if tree is empty
     if tree == nil {
         return 0.0
     }
+    
+    // If left child and right child of the node is empty then
+    // we have reached a child node
     if tree?.leftChild == nil && tree?.rightChild == nil {
         return Double(tree!.data) ?? 0
     }
     
-    let leftVal = evaluateTree(tree?.leftChild)
-    let rightVal = evaluateTree(tree?.rightChild)
+    // Will recursively parse the tree until it finds a leaf node which should contain a digit
+    let leftVal = evaluateTree(tree?.leftChild) // evaluate left child
+    let rightVal = evaluateTree(tree?.rightChild)// evaluate right child
     var ans: Double = 0
     
+    // Right value is placed in n1 and leftVal in n2 in different instance because
+    // ans would not compute the correct answer however flipping the parameters allowed
+    
+    // Perform operations based on the operator that the parent node
     if tree?.data == "+" { ans = calculator.add(leftVal, rightVal)}
-    if tree?.data == "-" { ans = calculator.subtract(rightVal, leftVal)}
+    if tree?.data == "-" { ans = calculator.subtract(leftVal, rightVal)}
     if tree?.data == "*" { ans = calculator.multiply(leftVal, rightVal)}
-    if tree?.data == "/" { ans = calculator.divide(rightVal, leftVal)}
-    if tree?.data == "%" { ans = calculator.modulo(rightVal, leftVal)}
-    if tree?.data == "^" { ans = calculator.power(rightVal, leftVal)}
+    if tree?.data == "/" { ans = calculator.divide(leftVal, rightVal)}
+    if tree?.data == "%" { ans = calculator.modulo(leftVal, rightVal)}
+    if tree?.data == "^" { ans = calculator.power(leftVal, rightVal)}
     return ans
 }
 
